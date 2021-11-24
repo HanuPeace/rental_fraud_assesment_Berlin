@@ -1,3 +1,7 @@
+# initialize a list called houses 
+houses = []
+# initialize loop variable for running through pages
+count = 1
 while count <= 50:
     # getting details for first page
     if count == 1:
@@ -6,12 +10,10 @@ while count <= 50:
         response = get(first_page)
         # parsing html 
         html_soup = BeautifulSoup(response.text, 'html.parser')
-        # in the html of the page, find all the bins with <li> and class:
+        # find bings with <div> with the class below as it hold the packet details of each house
         house_data = html_soup.find_all('div', class_="apartment-item ng-star-inserted")
-        # I like to print where the program is on the screen so we can follow its progress and where any errors happened
-        print(first_page)
         
-        # if the response was not empty (if something was actually scraped)
+        # data appended if scrapped sucessfully
         if house_data != []:
             # add to the list houses
             houses.extend(house_data)
@@ -21,14 +23,14 @@ while count <= 50:
             time.sleep(value)
     # pages other than the first
     elif count != 1:
-    # collect four and wait random times 
+    # collect wait random times 
         url = 'https://rentberry.com/de/apartments/s/berlin-germany?page=' + str(count) + '&sort=relevance'
         print(url)
         response = get(url)
         html_soup = BeautifulSoup(response.text, 'html.parser')
         print(response)
         house_data = html_soup.find_all('div', class_="apartment-item ng-star-inserted")
-
+        
         if house_data != []:
             houses.extend(house_data)
             value = random()
